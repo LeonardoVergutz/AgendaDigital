@@ -3,12 +3,14 @@ import time
 lista_telefonica = {}
 lista_de_afazeres = {}
 lista_de_compromissos = {}
+count = 0
 
 
 def escolhaagenda():
     print("Para acessar a lista telefônica digite 1!")
     print("Para acessar a lista de afazeres digite 2!")
     print("Para acessar a lista de compromissos digite 3!")
+    print("Para sair do programa digite 0!")
 
 
 def incluir(nome, telefone):
@@ -20,9 +22,9 @@ def incluir(nome, telefone):
 def excluir(nome):
     if nome in lista_telefonica:
         lista_telefonica.pop(nome)
-        return "O contato foi excluído com sucesso!!"
+        return "\nO contato foi excluído com sucesso!!"
     else:
-        return "O contato informado não foi encontrado!!"
+        return "\nO contato informado não foi encontrado!!"
 
 
 def pesquisar(nome):
@@ -31,7 +33,7 @@ def pesquisar(nome):
             print("\nO contato de", nome, "é:")
             return lista_telefonica[nome]
         else:
-            return "O contato informado não foi encontrado!!"
+            return "\nO contato informado não foi encontrado!!"
     else:
         print("\nA lista telefônica ainda não possui nenhum contato salvo!")
 
@@ -39,8 +41,8 @@ def pesquisar(nome):
 def todas():
     if len(lista_telefonica) > 0:
         print("\nContatos salvos na lista telefônica:")
-
-        print(f"{nome}: {lista_telefonica[nome]}")
+        for nome in lista_telefonica:
+            print(f"{nome}: {lista_telefonica[nome]}")
     else:
         print("\nA lista telefônica ainda não possui nenhum contato salvo!")
 
@@ -63,18 +65,37 @@ def perguntas():
 
 
 if __name__ == '__main__':
+
     while True:
 
         escolhaagenda()
-        escolha = int(input("Digite o número correspondente à função da agenda a ser acessada:"))
+        escolha = int(input("\nDigite o número correspondente à função da agenda a ser acessada:"))
 
-        if escolha == 1 or escolha == 2 or escolha == 3 or escolha == 4:
+        if escolha == 0:
+            print("Saindo da agenda...")
+            time.sleep(1.5)
+            break
+
+        elif escolha == 1 or escolha == 2 or escolha == 3:
             while True:
                 perguntas()
-                operacao = int(input("Digite o número correspondente à operação que deseja fazer:"))
+                operacao = int(input("\nDigite o número correspondente à operação que deseja fazer:"))
 
                 if operacao == 1:
-                    ordem = input("Deseja que os contatos sejam armazenados em ordem alfabética?")
+                    if count == 0:
+                        while True:
+                            ordem = input(
+                                "\nDeseja que os contatos sejam armazenados em ordem alfabética? (Sim/Não): ").lower()
+
+                            if ordem == "sim":
+                                break
+                            elif ordem == "não" or ordem == "nao":
+                                break
+                            else:
+                                print("Opção inválida! Por favor, responda com 'Sim' ou 'Não'.")
+
+                        count += 1
+
                     nome = input("\nDigite o nome do contato:")
                     telefone = input("Digite o telefone:")
 
@@ -90,26 +111,26 @@ if __name__ == '__main__':
                         print(pesquisar(nome))
                     else:
                         print("\nA lista telefônica ainda não possui nenhum contato salvo!")
-                while True:
-                    if operacao == 4:
-                        if ordem == "Sim" or ordem == "SIM" or ordem == "sim":
-                            todasordenadas()
-                            break
-                        elif ordem == "Nao" or ordem == "NAO" or ordem == "nao" or ordem == "Não" or ordem == "NÃO" or ordem == "não":
-                            todas()
-                            break
-                        else:
-                            print("Perdão,não conseguir entender")
 
-            if operacao == 5:
-                print("Salvando as informações da lista...")
-            time.sleep(3)
-            print("Voltando para o menu principal...\n")
-            time.sleep(3)
-            break
+                elif operacao == 4:
+                    if len(lista_telefonica) > 0:
+                            if ordem == "sim":
+                                todasordenadas()
 
+                            if ordem == "não" or ordem == "nao":
+                                todas()
+
+                    else:
+                        print("\nA lista telefônica ainda não possui nenhum contato salvo!")
+
+
+                elif operacao == 5:
+                    print("Salvando as informações da lista...")
+                    time.sleep(3)
+                    print("Informações salvas com sucesso!")
+                    time.sleep(1.25)
+                    print("Voltando para o menu principal...\n")
+                    time.sleep(3)
+                    break
         else:
-            print("Operação inválida! Por favor, escolha uma opção válida (1, 2, 3, 4 ou 5).")
-
-else:
-    print("Operação inválida! Por favor, escolha uma opção válida (1, 2, 3 ou 4).")
+            print("\nOperação inválida! Por favor, escolha uma opção válida (0, 1, 2 ou 3).\n")
