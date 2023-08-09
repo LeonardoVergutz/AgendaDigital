@@ -206,4 +206,4 @@ if __name__ == '__main__':
                     time.sleep(3)
                     break
         else:
-            print("\nOperação inválida! Por favor, escolha uma opção válida (0, 1, 2 ou 3).\n")
+            print("\nOperação inválida! Por favor, escolha uma opção válida (0, 1, 2 ou 3).\n")  #Fé
