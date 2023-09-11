@@ -98,7 +98,7 @@ def todas():
 
 # Função para limpar a tela do terminal
 def limpar_tela():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system("cls")
 
 # Função para exibir todos os contatos da lista telefônica em ordem alfabética
 def todasordenadas():
@@ -117,7 +117,8 @@ def perguntas():
     print("Para pesquisar um telefone na lista digite 4! ")
     print("Para visualizar todos os contatos armazenados na lista digite 5!")
     print("Para visualizar a ordem em que os contatos foram armazenados digite 6!")
-    print("Para voltar ao menu principal digite 7!")
+    print("Para visualizar a quantiadade de contatos armazenados na lista digite 7!")
+    print("Para voltar ao menu principal digite 8!")
 
 # Função para exibir a ordem de cadastro dos contatos
 def ordem_cadastro():
@@ -127,6 +128,19 @@ def ordem_cadastro():
             print(f"{c}: {nome}")
     else:
         print("\nA lista telefônica ainda não possui nenhum contato salvo!")
+
+# Função para exibir a quantidade de cadastros armazenados
+def quantidadedecontatos():
+    if len(lista_telefonica) == 0:
+        return 0
+    elif len(lista_telefonica)>0:
+        return len(lista_telefonica)
+
+def alterarcontato():
+    if lista_telefonica>0:
+        
+
+
 
 
 # Programa principal
@@ -197,7 +211,10 @@ if __name__ == '__main__':
                     if len(lista_telefonica) > 0:
                         ordem_cadastro()  # Chama a função para mostrar a ordem de cadastro
 
-                elif operacao == 7:  # Voltar ao menu principal
+                elif operacao == 7: #Visualizar a quantidade de contatos armazenados
+                    print("A quantidade de contatos armazenados é:",quantidadedecontatos())
+
+                elif operacao == 8:  # Voltar ao menu principal
                     print("Salvando as informações da lista...")
                     time.sleep(3)
                     print("Informações salvas com sucesso!")
