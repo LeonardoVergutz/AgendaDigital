@@ -4,15 +4,6 @@ import os
 # Dicionários para armazenar informações de contatos
 lista_telefonica = {}  # Dicionário para armazenar contatos (nome: telefone)
 lista_telefonica_ordem = {}  # Dicionário para informar ao usuário a ordem em que os contatos foram armazenados
-count = 0  # Contador para controlar a criação de contatos com mesmo nome
-
-
-# Função para exibir opções do menu
-def escolhaagenda():
-    print("Para acessar a lista telefônica digite 1!")
-    print("Para acessar a lista de afazeres digite 2!")
-    print("Para acessar a lista de compromissos digite 3!")
-    print("Para sair do programa digite 0!\n")
 
 
 # Função para adicionar contatos
@@ -79,7 +70,7 @@ def excluir(nome):
 # Função para pesquisar e exibir o telefone de um contato
 def pesquisar(nome):
     if len(lista_telefonica) > 0:
-        resultados=[]
+        resultados = []
         for contato_nome in lista_telefonica.keys():
             # Verifica se o nome ou o segundo nome (caso exista) contém a parte da busca
             if nome.lower() in contato_nome.lower():
@@ -157,6 +148,7 @@ def quantidadedecontatos():
     elif len(lista_telefonica) > 0:
         return len(lista_telefonica)
 
+
 # Função para alterar um contato armazenado
 def alterarcontato():
     if len(lista_telefonica) > 0:
@@ -176,96 +168,108 @@ def alterarcontato():
         return "A lista telefônica ainda não possui nenhum contato salvo!"
 
 
+def execucaolista():
+    count = 0  # Contador para controlar a criação de contatos com mesmo nome
+
+    while True:
+        perguntas()  # Exibe as opções do menu de operações da lista telefônica
+        operacao = int(input("\nDigite o número correspondente à operação que deseja fazer:"))
+        os.system('cls')  # Limpa a tela do terminal
+
+        if operacao == 1:  # Adicionar contato
+            if count == 0:
+                while True:
+                    ordem = input(
+                        "\nDeseja que os contatos sejam armazenados em ordem alfabética? (Sim/Não): ").lower()
+
+                    if ordem == "sim":
+                        break
+                    elif ordem == "não" or ordem == "nao":
+                        break
+                    else:
+                        print("Opção inválida! Por favor, responda com 'Sim' ou 'Não'.")
+                count += 1
+
+            # Solicita informações do novo contato
+            nome = input("\nDigite o nome do contato:")
+            telefone = input("Digite o telefone:")
+            print(incluir(nome, telefone))
+
+        elif operacao == 2:  # Excluir contato
+            nome = input("\nDigite o nome do contato:")
+            print(excluir(nome))  # Chama a função para excluir o contato
+
+        elif operacao == 3:
+            nomealtera = input("Digite o nome do contato a ser alterado:")
+            if nomealtera in lista_telefonica:
+                novonome = input("Digite o nome do novo contato:")
+                novotelefone = input("Digite o telefone do novo contato:")
+                lista_telefonica[novonome] = novotelefone
+                if nomealtera != novonome:
+                    del lista_telefonica[nomealtera]
+                print(f"Contato {nomealtera} foi alterado para {novonome} com o novo telefone {novotelefone}.")
+            else:
+                print("O nome informado não está presente em nenhum contato salvo!")
+
+        elif operacao == 4:  # Pesquisar telefone por nome
+            if len(lista_telefonica) > 0:
+                nome = input("\nDigite o nome do contato (parcial ou completo):")
+                print(pesquisar(nome))  # Chama a função para pesquisar o telefone
+            else:
+                print("\nA lista telefônica ainda não possui nenhum contato salvo!")
+
+        elif operacao == 5:  # Pesquisar nome por telefone
+            if len(lista_telefonica) > 0:
+                telefonebusca = input("Digite o número de telefone:")
+                print(pesquisar_tel(telefonebusca))  # Chama a função para pesquisar o nome
+            else:
+                print("A lista telefônica não possui nenhum contato salvo!")
+
+        elif operacao == 6:  # Visualizar todos os contatos
+            if len(lista_telefonica) > 0:
+                if ordem == "sim":
+                    todasordenadas()  # Chama a função para listar ordenadamente
+                if ordem == "não" or ordem == "nao":
+                    todas()  # Chama a função para listar todos os contatos
+            else:
+                print("\nA lista telefônica ainda não possui nenhum contato salvo!")
+
+        elif operacao == 7:  # Visualizar ordem de cadastro dos contatos
+            if len(lista_telefonica) > 0:
+                ordem_cadastro()  # Chama a função para mostrar a ordem de cadastro
+
+        elif operacao == 8:  # Visualizar a quantidade de contatos armazenados
+            print("A quantidade de contatos armazenados é:", quantidadedecontatos())
+
+        elif operacao == 9:  # Voltar ao menu principal
+            print("Salvando as informações da lista...")
+            time.sleep(3)
+            print("Informações salvas com sucesso!")
+            time.sleep(1.25)
+            print("Voltando para o menu principal...\n")
+            time.sleep(3)
+            break
+
+
 # Programa principal
 if __name__ == '__main__':
 
-    while True:
-        escolhaagenda()  # Exibe as opções do menu principal
-        escolha = int(input("Digite o número correspondente à função da agenda a ser acessada:"))
+    print("|=======================================|")
+    print("|  Seja bem-vindo a sua Agenda digital  |")
+    print("|=======================================|")
+    print("|          Menu Principal               |")
+    print("|=======================================|")
+    print("|          1 - Lista Telefônica         |")
+    print("|          2 - Lista de Afazeres        |")
+    print("|          3 - Lista de Compromissos    |")
+    print("|          4 - Esportes e Saúde         |")
+    print("|          5 - Conversão de Moeda       |")
+    print("|          6 - Conversão de Base        |")
+    print("|          7 - Calculadora              |")
+    print("|          8 - Bloco de Notas           |")
+    print("|=======================================|")
 
-        if escolha == 0:
-            print("Saindo da agenda...")
-            time.sleep(1.5)
-            break
+    opção = int(input("Digite a opção correspondente a função da agenda a ser acessada:"))
 
-        elif escolha == 1 or escolha == 2 or escolha == 3:
-            while True:
-                perguntas()  # Exibe as opções do menu de operações da lista telefônica
-                operacao = int(input("\nDigite o número correspondente à operação que deseja fazer:"))
-                os.system('cls')  # Limpa a tela do terminal
-
-                if operacao == 1:  # Adicionar contato
-                    if count == 0:
-                        while True:
-                            ordem = input(
-                                "\nDeseja que os contatos sejam armazenados em ordem alfabética? (Sim/Não): ").lower()
-
-                            if ordem == "sim":
-                                break
-                            elif ordem == "não" or ordem == "nao":
-                                break
-                            else:
-                                print("Opção inválida! Por favor, responda com 'Sim' ou 'Não'.")
-                        count += 1
-
-                    # Solicita informações do novo contato
-                    nome = input("\nDigite o nome do contato:")
-                    telefone = input("Digite o telefone:")
-                    print(incluir(nome, telefone))
-
-                elif operacao == 2:  # Excluir contato
-                    nome = input("\nDigite o nome do contato:")
-                    print(excluir(nome))  # Chama a função para excluir o contato
-
-                elif operacao == 3:
-                    nomealtera = input("Digite o nome do contato a ser alterado:")
-                    if nomealtera in lista_telefonica:
-                        novonome = input("Digite o nome do novo contato:")
-                        novotelefone = input("Digite o telefone do novo contato:")
-                        lista_telefonica[novonome] = novotelefone
-                        if nomealtera != novonome:
-                            del lista_telefonica[nomealtera]
-                        print(f"Contato {nomealtera} foi alterado para {novonome} com o novo telefone {novotelefone}.")
-                    else:
-                        print("O nome informado não está presente em nenhum contato salvo!")
-
-                elif operacao == 4:  # Pesquisar telefone por nome
-                    if len(lista_telefonica) > 0:
-                        nome = input("\nDigite o nome do contato (parcial ou completo):")
-                        print(pesquisar(nome))  # Chama a função para pesquisar o telefone
-                    else:
-                        print("\nA lista telefônica ainda não possui nenhum contato salvo!")
-
-                elif operacao == 5:  # Pesquisar nome por telefone
-                    if len(lista_telefonica) > 0:
-                        telefonebusca = input("Digite o número de telefone:")
-                        print(pesquisar_tel(telefonebusca))  # Chama a função para pesquisar o nome
-                    else:
-                        print("A lista telefônica não possui nenhum contato salvo!")
-
-                elif operacao == 6:  # Visualizar todos os contatos
-                    if len(lista_telefonica) > 0:
-                        if ordem == "sim":
-                            todasordenadas()  # Chama a função para listar ordenadamente
-                        if ordem == "não" or ordem == "nao":
-                            todas()  # Chama a função para listar todos os contatos
-                    else:
-                        print("\nA lista telefônica ainda não possui nenhum contato salvo!")
-
-                elif operacao == 7:  # Visualizar ordem de cadastro dos contatos
-                    if len(lista_telefonica) > 0:
-                        ordem_cadastro()  # Chama a função para mostrar a ordem de cadastro
-
-                elif operacao == 8:  # Visualizar a quantidade de contatos armazenados
-                    print("A quantidade de contatos armazenados é:", quantidadedecontatos())
-
-                elif operacao == 9:  # Voltar ao menu principal
-                    print("Salvando as informações da lista...")
-                    time.sleep(3)
-                    print("Informações salvas com sucesso!")
-                    time.sleep(1.25)
-                    print("Voltando para o menu principal...\n")
-                    time.sleep(3)
-                    break
-        else:
-            print("\nOperação inválida! Por favor, escolha uma opção válida (0, 1, 2 ou 3).\n")  # Fé
+    if opção == 1:
+        execucaolista()
