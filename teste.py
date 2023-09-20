@@ -4,8 +4,6 @@ import os
 # Dicionários para armazenar informações de contatos
 lista_telefonica = {}  # Dicionário para armazenar contatos (nome: telefone)
 lista_telefonica_ordem = {}  # Dicionário para informar ao usuário a ordem em que os contatos foram armazenados
-lista_de_afazeres = {}  # Dicionário para armazenar afazeres da rotina (ainda não implementado)
-lista_de_compromissos = {}  # Dicionário para armazenar compromissos (ainda não implementado)
 count = 0  # Contador para controlar a criação de contatos com mesmo nome
 
 
@@ -47,6 +45,14 @@ def incluir(nome, telefone):
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
 
+    # Verificar se o telefone é válido
+    if not telefone.isdigit():
+        return "\nNúmero de telefone inválido, por favor digite um número de telefone válido!"
+
+    # Verificar se o telefone possui o formato correto (por exemplo, 10 dígitos)
+    if len(telefone) != 11:
+        return "\nNúmero de telefone inválido, o número deve conter 11 dígitos!"
+
     # Adiciona um novo contato à lista
     lista_telefonica[nome] = telefone
     lista_telefonica_ordem[nome] = telefone
@@ -73,11 +79,18 @@ def excluir(nome):
 # Função para pesquisar e exibir o telefone de um contato
 def pesquisar(nome):
     if len(lista_telefonica) > 0:
-        if nome in lista_telefonica:
-            print("\nO número de", nome, "é:")
-            return lista_telefonica[nome]
+        resultados=[]
+        for contato_nome in lista_telefonica.keys():
+            # Verifica se o nome ou o segundo nome (caso exista) contém a parte da busca
+            if nome.lower() in contato_nome.lower():
+                resultados.append(contato_nome)
+
+        if resultados:
+            print(f"\nResultados encontrados para '{nome}':")
+            for resultado in resultados:
+                print(resultado, "-", lista_telefonica[resultado])
         else:
-            return "\nO contato informado não foi encontrado!!"
+            return f"\nNenhum contato encontrado para '{nome}'!"
     else:
         print("\nA lista telefônica ainda não possui nenhum contato salvo!")
 
@@ -119,8 +132,8 @@ def perguntas():
     print("\nPara incluir um contato na lista digite 1! ")
     print("Para excluir um contato na lista digite 2! ")
     print("Para alterar um contato salvo digite 3!")
-    print("Para pesquisar o telefone de um contato na lista digite 4!")
-    print("Para pesquisar um telefone na lista digite 5!")
+    print("Para pesquisar um telefone utilizando o nome do contato salvo digite 4!")
+    print("Para pesquisar um nome utilizando um telefone digite 5!")
     print("Para visualizar todos os contatos armazenados na lista digite 6!")
     print("Para visualizar a ordem em que os contatos foram armazenados digite 7!")
     print("Para visualizar a quantiadade de contatos armazenados na lista digite 8!")
@@ -144,7 +157,7 @@ def quantidadedecontatos():
     elif len(lista_telefonica) > 0:
         return len(lista_telefonica)
 
-
+# Função para alterar um contato armazenado
 def alterarcontato():
     if len(lista_telefonica) > 0:
         nomealtera = input("Digite o nome do contato a ser alterado:")
@@ -215,9 +228,10 @@ if __name__ == '__main__':
                         print(f"Contato {nomealtera} foi alterado para {novonome} com o novo telefone {novotelefone}.")
                     else:
                         print("O nome informado não está presente em nenhum contato salvo!")
+
                 elif operacao == 4:  # Pesquisar telefone por nome
                     if len(lista_telefonica) > 0:
-                        nome = input("\nDigite o nome do contato:")
+                        nome = input("\nDigite o nome do contato (parcial ou completo):")
                         print(pesquisar(nome))  # Chama a função para pesquisar o telefone
                     else:
                         print("\nA lista telefônica ainda não possui nenhum contato salvo!")
