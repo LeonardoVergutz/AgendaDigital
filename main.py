@@ -1,3 +1,5 @@
+import listatelefonica
+
 print("|=======================================|")
 print("|  Seja bem-vindo a sua Agenda digital  |")
 print("|=======================================|")
@@ -18,6 +20,5 @@ opção = int(input("Digite a opção correspondente a função da agenda a ser 
 if __name__ == '__main__':
 
     if opção == 1:
-        from teste import *
-
+        listatelefonica.execucaolistatelefonica()
 
